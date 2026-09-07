@@ -16,7 +16,7 @@ load_dotenv(".env")
 data_dir = Path(os.getenv("DATA_DIR"))
 
 INPUT_CSV = data_dir / "cin_peads.csv"
-OUTPUT_DIR = "."  # same folder as this script
+OUTPUT_DIR = data_dir
 
 # =================================================================
 
@@ -164,16 +164,3 @@ cin['died'] = cin['outcome'].map({"Alive": 0, "Died": 1})
 
 # save the fully cleaned CIN data as both CSV and Parquet
 cin.to_csv(os.path.join(OUTPUT_DIR, "cin_cleaned_full.csv"), index=False)
-pq.write_table(pa.Table.from_pandas(cin), os.path.join(OUTPUT_DIR, "cin_cleaned_full.parquet"))
-
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
-pd.set_option('display.width', 1000)
-df = pd.read_csv('cin_cleaned_full.csv')
-print(df.head(10))
-# compare with the origibal csv data
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
-pd.set_option('display.width', 1000)
-df = pd.read_csv(INPUT_CSV)
-print(df.head(10))
